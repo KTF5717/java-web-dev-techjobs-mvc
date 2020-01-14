@@ -31,15 +31,17 @@ public class SearchController {
         System.out.println(searchTerm);
 
         ArrayList<Job> jobs;
-        if (searchType.toLowerCase().equals("all") || searchTerm.equals("")){
+        if (searchTerm.equals("")) {
             jobs = JobData.findAll();
             model.addAttribute("title", "All Jobs");
+        }else if (searchType.toLowerCase().equals("all")){
+            jobs = JobData.findByValue(searchTerm);
         } else {
             jobs = JobData.findByColumnAndValue(searchType, searchTerm);
             model.addAttribute("title", "Jobs with " + columnChoices.get(searchType) + ": " + searchTerm);
         }
         model.addAttribute("jobs", jobs);
-
+        model.addAttribute("columns", columnChoices);
 
         return "search";
     }
